@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register | StayMate</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .success {
+      color: green;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+    }
+
+    .toggle-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .toggle-buttons button {
+      width: 48%;
+      background-color: #eee;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .toggle-buttons button.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Create Your StayMate Account</h2>
+    <form id="register-form">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="tel" id="phone" placeholder="Phone Number" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="number" id="age" placeholder="Age" required />
+      
+      <button type="submit">Register</button>
+      <p id="register-status"></p>
+      <p>Already have an account? <a href="login.html">Login</a></p>
+    </form>
+  </div>
+
+  <script>
+    const registerForm = document.getElementById("register-form");
+    const statusText = document.getElementById("register-status");
+
+    registerForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const password = document.getElementById("password").value;
+      const age = document.getElementById("age").value;
+
+      const newUser = {
+        name,
+        email,
+        phone,
+        password,
+        age
+      };
+
+      let users = JSON.parse(localStorage.getItem("staymate_users")) || [];
+
+      const alreadyExists = users.find(user => user.email === email);
+
+      if (alreadyExists) {
+        statusText.textContent = "❌ Email already registered.";
+        statusText.className = "error";
+      } else {
+        users.push(newUser);
+        localStorage.setItem("staymate_users", JSON.stringify(users));
+        statusText.textContent = "✅ Registered successfully!";
+        statusText.className = "success";
+        registerForm.reset();
+      }
+    });
+  </script>
+</body>
+</html>

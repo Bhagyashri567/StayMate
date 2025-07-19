@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StayMate | Modern Living</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- ✅ Navbar -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo-title">
+      <img src="assets/logo.jpg" alt="StayMate Logo" class="logo" />
+      <h2>StayMate</h2>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#services">Our Services</a></li>
+      <li><a href="#why">Features</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="login.html" class="get-started">Register</a></li>
+      <li>
+        <div class="profile-icon" onclick="toggleProfile()">
+          <img src="assets/userphoto.jpg" alt="User" />
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ✅ Profile Panel -->
+<div class="profile-panel" id="profilePanel">
+  <h3>User Profile</h3>
+  <img id="profilePreview" src="assets/userphoto.jpg" alt="Profile Pic" />
+  <input type="file" onchange="uploadProfilePic(event)" />
+  <p><strong>Name:</strong> <span id="userName"></span></p>
+  <p><strong>Email:</strong> <span id="userEmail"></span></p>
+  <p><strong>Phone:</strong> <span id="userPhone"></span></p>
+  <p><strong>Age:</strong> <span id="userAge"></span></p>
+  <hr />
+  <p><strong>Bookings:</strong> None yet</p>
+  <p><strong>Transactions:</strong> ₹0.00</p>
+  <button onclick="logout()">Logout</button>
+</div>
+
+
+<!-- ✅ Hero Section -->
+<header class="hero" id="hero">
+  <h1>Find Your Perfect Stay</h1>
+  <p>Smart, Verified, and Student-Friendly Accommodations</p>
+</header>
+
+<!-- ✅ Search Section -->
+<section class="search-section" id="search">
+  <input type="text" id="locationInput" placeholder="Search by location..." />
+  <select id="stayType">
+    <option value="pg">PG</option>
+    <option value="flat">Flat</option>
+    <option value="hostel">Hostel</option>
+    <option value="house">House</option>
+    <option value="short">Short Stay</option>
+  </select>
+  <button onclick="searchPlaces()"><i class="fas fa-search"></i> Search</button>
+</section>
+
+<!-- ✅ Results Section -->
+<section class="results-section" id="results"></section>
+
+<!-- ✅ Services -->
+<section class="services" id="services" style="position: relative; z-index: 1;">
+  <div style="background: url('assets/img.jpg') center/cover no-repeat; filter: blur(0.12px); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+  <h2>Our Services</h2>
+  <div class="service-boxes">
+    <div class="service"><i class="fas fa-building"></i><h4>PG/Hostel Finder</h4><p>Locate verified and affordable stays near campus.</p></div>
+    <div class="service"><i class="fas fa-bed"></i><h4>Short Stay</h4><p>Book 1-2 day stays instantly for quick getaways or interviews.</p></div>
+    <div class="service"><i class="fas fa-user-plus"></i><h4>Owner Listings</h4><p>Let property owners list and manage their accommodations.</p></div>
+    <div class="service"><i class="fas fa-home"></i><h4>Rental Homes</h4><p>Explore homes with real images, amenities & honest reviews.</p></div>
+  </div>
+</section>
+
+<!-- ✅ Why Choose Us -->
+<section class="why-choose" id="why">
+  <h2>Why StayMate?</h2>
+  <div class="why-list">
+    <div><i class="fas fa-lock"></i> Safe & Verified Listings</div>
+    <div><i class="fas fa-images"></i> Real Images & Reviews</div>
+    <div><i class="fas fa-bolt"></i> Instant Booking</div>
+    <div><i class="fas fa-map-marker-alt"></i> Smart Location Filter</div>
+    <div><i class="fas fa-mobile-alt"></i> Mobile Friendly</div>
+  </div>
+</section>
+
+<!-- ✅ Contact Section -->
+<section class="contact-section" id="contact">
+  <div class="contact-container">
+    <div class="contact-info">
+      <h2>Let's Connect</h2>
+      <p><i class="fas fa-map-marker-alt"></i> Dhule City, India</p>
+      <p><i class="fas fa-envelope"></i> bhagyashrip901@gmail.com</p>
+      <p><i class="fas fa-phone"></i> +123 456 7890</p>
+    </div>
+    <div class="contact-form">
+      <h2>Send Us a Message</h2>
+      <form>
+        <label>Your Name</label>
+        <input type="text" placeholder="Enter your name" required>
+        <label>Your Email</label>
+        <input type="email" placeholder="Enter your email" required>
+        <label>Your Message</label>
+        <textarea rows="5" placeholder="Type your message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ Footer -->
+<footer class="footer">
+  <p>Made by StayMate Team</p>
+  <p>&copy; 2025 StayMate. All rights reserved.</p>
+</footer>
+
+<!-- ✅ JavaScript -->
+<script src="data.js"></script>
+<script>
+  function searchPlaces() {
+    const location = document.getElementById('locationInput').value.toLowerCase();
+    const type = document.getElementById('stayType').value;
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '';
+    const filtered = listings.filter(item =>
+      item.location.includes(location) && item.type === type
+    );
+    if (filtered.length === 0) {
+      resultsDiv.innerHTML = "<p>No stays found. Try another search.</p>";
+      return;
+    }
+    filtered.forEach(place => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${place.name}</h3>
+        <p><strong>Location:</strong> ${place.location}</p>
+        <p><strong>Price:</strong> ${place.price}</p>
+        <button onclick="viewDetails(${place.id})">View Details</button>
+      `;
+      resultsDiv.appendChild(card);
+    });
+  }
+
+  function viewDetails(id) {
+    localStorage.setItem('selectedListingId', id);
+    window.location.href = 'detail.html';
+  }
+
+  function toggleProfile() {
+    const panel = document.getElementById('profilePanel');
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function uploadProfilePic(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('profilePreview').src = e.target.result;
+      document.getElementById('profileImg').src = e.target.result;
+      localStorage.setItem('profilePic', e.target.result);
+    };
+    if (file) reader.readAsDataURL(file);
+  }
+
+  function logout() {
+    alert("Logged out.");
+    window.location.href = "login.html";
+  }
+
+  // Load user info
+  window.onload = function() {
+    document.getElementById('userName').textContent = localStorage.getItem('registeredName') || "Unknown";
+    document.getElementById('userEmail').textContent = localStorage.getItem('registeredEmail') || "Not set";
+    document.getElementById('userPhone').textContent = localStorage.getItem('registeredPhone') || "Not set";
+    document.getElementById('userAge').textContent = localStorage.getItem('registeredAge') || "Not set";
+
+    const savedPic = localStorage.getItem('profilePic');
+    if (savedPic) {
+      document.getElementById('profilePreview').src = savedPic;
+      document.getElementById('profileImg').src = savedPic;
+    } else {
+      document.getElementById('profileImg').src = 'assets/userphoto.jpg';
+    }
+  };
+</script>
+
+</body>
+</html>

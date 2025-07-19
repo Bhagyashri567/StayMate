@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | StayMate</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="toggle-buttons">
+      <button id="studentBtn" class="active" onclick="switchRole('student')">Student Login</button>
+      <button id="adminBtn" onclick="switchRole('admin')">Admin Login</button>
+    </div>
+
+    <form id="loginForm">
+      <h2>Login to StayMate</h2>
+
+      <input type="email" id="email" placeholder="Enter Email" required />
+      <input type="password" id="password" placeholder="Enter Password" required />
+
+      <button type="submit">Login</button>
+
+      <p class="error" id="login-error" style="display: none;">❌ Invalid Email or Password</p>
+      <p style="text-align:center;">Forgot your password? <a href="forgot-password.html">Click here</a></p>
+      <p style="text-align:center;">Don't have an account? <a href="register.html">Register here</a></p>
+    </form>
+  </div>
+
+  <script>
+    let currentRole = 'student';
+
+    function switchRole(role) {
+      currentRole = role;
+
+      document.getElementById("studentBtn").classList.remove("active");
+      document.getElementById("adminBtn").classList.remove("active");
+
+      if (role === 'student') {
+        document.getElementById("studentBtn").classList.add("active");
+      } else {
+        document.getElementById("adminBtn").classList.add("active");
+      }
+    }
+
+    const loginForm = document.getElementById("loginForm");
+    const errorText = document.getElementById("login-error");
+
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      const users = JSON.parse(localStorage.getItem("staymate_users")) || [];
+
+      const validUser = users.find(
+        user => user.email === email && user.password === password && user.role === currentRole
+      );
+
+      if (validUser) {
+        localStorage.setItem("staymate_current_user", JSON.stringify(validUser));
+        window.location.href = "index.html";
+      } else {
+        errorText.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
